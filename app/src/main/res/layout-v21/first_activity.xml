@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".first_activity"
+    android:orientation="vertical">
+
+<Button
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:text="@string/Plus"
+    android:onClick="GoToList"
+    android:textSize="25sp"
+    android:textAlignment="center"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/button"
+    android:gravity="center_horizontal"
+    android:backgroundTint="#EE913D3D"
+    android:layout_centerInParent="true"/>
+
+
+<!--    <Button-->
+<!--        android:id="@+id/listButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:onClick="GoToList"-->
+<!--        android:text="@string/Plus"-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        tools:ignore="RelativeOverlap"-->
+<!--        android:layout_alignParentRight="true" />-->
+
+    <ListView
+        android:id="@+id/mySelectedList"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#bfbdbd"/>
+
+</RelativeLayout>
