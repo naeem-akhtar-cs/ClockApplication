@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<City> citiesList;
     ArrayList<City> SelectedCities;
     CityListAdapter myAdapter;
+
+    private RecyclerView recyclerView;
+   // private RecyclerView.Adapter myAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     ListView myList;
     EditText text;
 

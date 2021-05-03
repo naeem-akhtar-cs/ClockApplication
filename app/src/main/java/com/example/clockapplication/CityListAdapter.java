@@ -40,14 +40,24 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         City city=getItem(position);
 
+        viewHolder holder;
+
         if(convertView==null){
+            holder=new viewHolder();
+
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_items,parent,false);
+
+            holder.cBox=convertView.findViewById(R.id.cBox);
+            holder.tView=convertView.findViewById(R.id.myText);
+            holder.time=convertView.findViewById(R.id.timeText);
+
+            convertView.setTag(holder);
         }
 
-        CheckBox cBox= convertView.findViewById(R.id.cBox);
+        holder=(viewHolder) convertView.getTag();
 
-        cBox.setOnClickListener(v -> {
+        holder.cBox.setOnClickListener(v -> {
             if(((CheckBox) v).isChecked()){
                 city.setCheck(true);
                 SelectedCities.add(city);
@@ -64,10 +74,10 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
             }
         });
 
-        cBox.setChecked(city.getCheck());
+        holder.cBox.setChecked(city.getCheck());
 
-        TextView tView= convertView.findViewById(R.id.myText);
-        tView.setText(city.getName());
+        //TextView tView= convertView.findViewById(R.id.myText);
+        holder.tView.setText(city.getName());
 
         //Time
         DateFormat df = new SimpleDateFormat("h:mm a");
@@ -80,8 +90,8 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
 
         String MyTime=df.format(newDate.getTime());
 
-        TextView time=convertView.findViewById(R.id.timeText);
-        time.setText(MyTime);
+        //TextView time=convertView.findViewById(R.id.timeText);
+        holder.time.setText(MyTime);
 
         return convertView;
     }
@@ -122,5 +132,11 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
             FilteredCitiesList = (ArrayList<City>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    private class viewHolder{
+        public CheckBox cBox;
+        public TextView tView;
+        public TextView time;
     }
 }
