@@ -6,9 +6,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -17,13 +18,13 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<City> citiesList;
     ArrayList<City> SelectedCities;
-    CityListAdapter myAdapter;
+    //CityListAdapter myAdapter;
 
     private RecyclerView recyclerView;
-   // private RecyclerView.Adapter myAdapter;
+    private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    ListView myList;
+    //ListView myList;
     EditText text;
 
     @Override
@@ -34,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         SelectedCities = (ArrayList<City>) intent.getSerializableExtra("SelectedCities");
         citiesList=(ArrayList<City>) intent.getSerializableExtra("citiesList");
+        recyclerView= findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
 
         if(SelectedCities==null){
             SelectedCities=new ArrayList<>();
@@ -80,18 +87,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                myAdapter.getFilter().filter(text.toString());
+             //   myAdapter..filter(text.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) { }
         });
 
-        myList=findViewById(R.id.myList);
-        if(myAdapter==null) { //Avoiding creating adapter again
-            myAdapter = new CityListAdapter(this, this.citiesList,this.SelectedCities);
-        }
-        myList.setAdapter(myAdapter);
+
+        myAdapter = new CityListAdapter(this.citiesList,this.SelectedCities);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),layoutManager.getHeight()));
+        recyclerView.setAdapter(myAdapter);
     }
 
     private void prepareResult(){

@@ -1,23 +1,24 @@
 package com.example.clockapplication;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
-public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
+public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHolder> implements Filterable {
 
     private final ArrayList<City> citiesList;
     private final ArrayList<City> SelectedCities;
@@ -25,8 +26,8 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
     private ArrayList<City> FilteredCitiesList;
     private Filter filter;
 
-    public CityListAdapter(Context context, ArrayList<City> citiesList,ArrayList<City> SelectedCities){
-        super(context,0,citiesList);
+    public CityListAdapter(ArrayList<City> citiesList, ArrayList<City> SelectedCities){
+        super();
         this.citiesList=citiesList;
         this.FilteredCitiesList=citiesList;
         this.SelectedCities=SelectedCities;
@@ -34,28 +35,28 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
 
     public City getItem(int position){ return FilteredCitiesList.get(position); }
 
-    public int getCount() { return FilteredCitiesList.size(); }
+    @Override
+    public Filter getFilter(){
+        if(filter==null){
+            filter=new CitiesFilter();
+        }
+        return filter;
+    }
+
+    @NonNull
+    @Override
+    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View convertView = inflater.inflate(R.layout.list_items,parent,false);
+
+        return new viewHolder(convertView);
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+
         City city=getItem(position);
-
-        viewHolder holder;
-
-        if(convertView==null){
-            holder=new viewHolder();
-
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_items,parent,false);
-
-            holder.cBox=convertView.findViewById(R.id.cBox);
-            holder.tView=convertView.findViewById(R.id.myText);
-            holder.time=convertView.findViewById(R.id.timeText);
-
-            convertView.setTag(holder);
-        }
-
-        holder=(viewHolder) convertView.getTag();
 
         holder.cBox.setOnClickListener(v -> {
             if(((CheckBox) v).isChecked()){
@@ -73,6 +74,7 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
                 }
             }
         });
+
 
         holder.cBox.setChecked(city.getCheck());
 
@@ -92,16 +94,11 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
 
         //TextView time=convertView.findViewById(R.id.timeText);
         holder.time.setText(MyTime);
-
-        return convertView;
     }
 
     @Override
-    public Filter getFilter(){
-        if(filter==null){
-            filter=new CitiesFilter();
-        }
-        return filter;
+    public int getItemCount() {
+        return FilteredCitiesList.size();
     }
 
 
@@ -134,9 +131,17 @@ public class CityListAdapter extends ArrayAdapter<City> implements Filterable {
         }
     }
 
-    private class viewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder {
         public CheckBox cBox;
         public TextView tView;
         public TextView time;
+
+        public viewHolder(View view) {
+            super(view);
+
+            cBox=view.findViewById(R.id.cBox);
+            tView=view.findViewById(R.id.myText);
+            time=view.findViewById(R.id.timeText);
+        }
     }
 }
