@@ -18,13 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<City> citiesList;
     ArrayList<City> SelectedCities;
-    //CityListAdapter myAdapter;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    //ListView myList;
     EditText text;
 
     @Override
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-             //   myAdapter..filter(text.toString());
+                //myAdapter.getFilter().filter(text.toString());
             }
 
             @Override

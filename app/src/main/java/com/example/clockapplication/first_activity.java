@@ -24,6 +24,13 @@ public class first_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+
+        SelectedCities = new ArrayList<City>();
+        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
+        collection.load(getApplicationContext());
+
         setContentView(R.layout.first_activity);
     }
 
@@ -52,5 +59,18 @@ public class first_activity extends AppCompatActivity {
                 myList.setAdapter(myAdapter);
             }
         }
+    }
+
+    public void onStop(){
+        super.onStop();
+        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
+        collection.save(getApplicationContext());
+    }
+
+    public void onResume(){
+        super.onResume();
+        SelectedCities = new ArrayList<City>();
+        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
+        collection.load(getApplicationContext());
     }
 }

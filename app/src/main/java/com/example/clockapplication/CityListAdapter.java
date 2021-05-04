@@ -35,14 +35,6 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
 
     public City getItem(int position){ return FilteredCitiesList.get(position); }
 
-    @Override
-    public Filter getFilter(){
-        if(filter==null){
-            filter=new CitiesFilter();
-        }
-        return filter;
-    }
-
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -75,10 +67,8 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
             }
         });
 
-
         holder.cBox.setChecked(city.getCheck());
 
-        //TextView tView= convertView.findViewById(R.id.myText);
         holder.tView.setText(city.getName());
 
         //Time
@@ -92,7 +82,6 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
 
         String MyTime=df.format(newDate.getTime());
 
-        //TextView time=convertView.findViewById(R.id.timeText);
         holder.time.setText(MyTime);
     }
 
@@ -101,9 +90,15 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
         return FilteredCitiesList.size();
     }
 
+    @Override
+    public Filter getFilter(){
+        if(filter==null){
+            filter=new CitiesFilter();
+        }
+        return filter;
+    }
 
     private class CitiesFilter extends Filter {
-
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();

@@ -1,8 +1,12 @@
 package com.example.clockapplication;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.io.Serializable;
 
-class City implements Serializable{
+class City implements Serializable,Persistable{
 
     private String cityName;
     private double timeZone;
@@ -61,5 +65,34 @@ class City implements Serializable{
             default:
                 return 0;
         }
+    }
+
+    @Override
+    public void save(SQLiteDatabase dataStore) {
+        ContentValues values = new ContentValues();
+        values.put("Name",cityName);
+        values.put("Zone",timeZone);
+        values.put("Status",status);
+        values.put("CountryCode",counrtyCode);
+
+        dataStore.insertWithOnConflict("SelectedCities",null,values,SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    @Override
+    public void load(Cursor dataStore) {
+        cityName = dataStore.getString(dataStore.getColumnIndex("Name"));
+        timeZone = Double.parseDouble(dataStore.getString(dataStore.getColumnIndex("Zone"))); //Converting String to Double
+        status = ((dataStore.getString(dataStore.getColumnIndex("Status"))).equals("true")); //Converting String to Boolean Conversion
+        counrtyCode = dataStore.getString(dataStore.getColumnIndex("CountryCode"));
+    }
+
+    @Override
+    public String getId() {
+        return cityName;
+    }
+
+    @Override
+    public String getType() {
+        return getClass().getName();
     }
 }
