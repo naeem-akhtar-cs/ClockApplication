@@ -16,11 +16,11 @@ public class CitiesDBHelper extends SQLiteOpenHelper{
 
     public void onCreate(SQLiteDatabase db){
 
-        String sql = "CREATE TABLE SelectedCities (" +
-                "cityName TEXT PRIMARY KEY," +
-                "timeZone DOUBLE," +
-                "status BOOLEAN," +
-                "counrtyCode TEXT)";
+        String sql = "CREATE TABLE SelectedCities (id TEXT PRIMARY KEY," +
+                            "cityName TEXT," +
+                            "timeZone TEXT," +
+                            "status TEXT," +
+                            "counrtyCode TEXT)";
 
         db.execSQL(sql);
     }

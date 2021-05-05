@@ -3,14 +3,9 @@ package com.example.clockapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
-
-import static java.lang.System.exit;
 
 public class first_activity extends AppCompatActivity {
 
@@ -23,14 +18,14 @@ public class first_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-
-        SelectedCities = new ArrayList<City>();
-        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
-        collection.load(getApplicationContext());
-
+        if(SelectedCities==null) {
+            SelectedCities = new ArrayList<City>();
+            PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
+            collection.load(getApplicationContext());
+        }
         setContentView(R.layout.first_activity);
     }
 
@@ -61,16 +56,18 @@ public class first_activity extends AppCompatActivity {
         }
     }
 
-    public void onStop(){
-        super.onStop();
+    public void onPause(){
+        super.onPause();
         PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
         collection.save(getApplicationContext());
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        SelectedCities = new ArrayList<City>();
-        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
-        collection.load(getApplicationContext());
+        if (SelectedCities == null) {
+            SelectedCities = new ArrayList<City>();
+            PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
+            collection.load(getApplicationContext());
+        }
     }
 }

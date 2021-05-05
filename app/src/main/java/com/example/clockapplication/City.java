@@ -1,19 +1,22 @@
 package com.example.clockapplication;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
 import java.io.Serializable;
+import java.util.UUID;
+
+import android.content.ContentValues;
+import android.database.sqlite.*;
+import android.database.*;
 
 class City implements Serializable,Persistable{
 
+    private String id;
     private String cityName;
     private double timeZone;
     private Boolean status;
     private String counrtyCode;
 
     public City(String name, double zone,String country){
+        this.id = UUID.randomUUID().toString();
         this.cityName=name;
         this.timeZone=zone;
         this.status=false;
@@ -68,25 +71,6 @@ class City implements Serializable,Persistable{
     }
 
     @Override
-    public void save(SQLiteDatabase dataStore) {
-        ContentValues values = new ContentValues();
-        values.put("Name",cityName);
-        values.put("Zone",timeZone);
-        values.put("Status",status);
-        values.put("CountryCode",counrtyCode);
-
-        dataStore.insertWithOnConflict("SelectedCities",null,values,SQLiteDatabase.CONFLICT_REPLACE);
-    }
-
-    @Override
-    public void load(Cursor dataStore) {
-        cityName = dataStore.getString(dataStore.getColumnIndex("Name"));
-        timeZone = Double.parseDouble(dataStore.getString(dataStore.getColumnIndex("Zone"))); //Converting String to Double
-        status = ((dataStore.getString(dataStore.getColumnIndex("Status"))).equals("true")); //Converting String to Boolean Conversion
-        counrtyCode = dataStore.getString(dataStore.getColumnIndex("CountryCode"));
-    }
-
-    @Override
     public String getId() {
         return cityName;
     }
@@ -94,5 +78,26 @@ class City implements Serializable,Persistable{
     @Override
     public String getType() {
         return getClass().getName();
+    }
+
+    @Override
+    public void save(SQLiteDatabase dataStore) {
+        ContentValues values = new ContentValues();
+        values.put("id",id);
+        values.put("cityName",cityName);
+        values.put("timeZone",timeZone);
+        values.put("status",status);
+        values.put("counrtyCode",counrtyCode);
+
+        dataStore.insertWithOnConflict("SelectedCities",null,values,SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    @Override
+    public void load(Cursor dataStore) {
+        id = dataStore.getString(dataStore.getColumnIndex("id"));
+        cityName = dataStore.getString(dataStore.getColumnIndex("cityName"));
+        timeZone = Double.parseDouble(dataStore.getString(dataStore.getColumnIndex("timeZone"))); //Converting String to Double
+        status = ((dataStore.getString(dataStore.getColumnIndex("status"))).equals("true")); //Converting String to Boolean Conversion
+        counrtyCode = dataStore.getString(dataStore.getColumnIndex("counrtyCode"));
     }
 }

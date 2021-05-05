@@ -40,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        if(SelectedCities==null){
-            SelectedCities=new ArrayList<>();
-        }
-
         if(citiesList == null){
             citiesList = new ArrayList<>();
             citiesList.add(new City("Shanghai",8,"cn"));

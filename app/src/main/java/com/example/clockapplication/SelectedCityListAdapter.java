@@ -24,7 +24,6 @@ public class SelectedCityListAdapter extends ArrayAdapter<City> {
         super(context, 0, SelectedCitiesList);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         City city = getItem(position);
