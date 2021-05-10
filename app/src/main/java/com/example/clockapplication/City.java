@@ -1,19 +1,22 @@
 package com.example.clockapplication;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.UUID;
 
 import android.content.ContentValues;
 import android.database.sqlite.*;
 import android.database.*;
 
-class City implements Serializable,Persistable{
+class City implements Serializable{
 
     private String id;
     private String cityName;
     private double timeZone;
     private Boolean status;
     private String counrtyCode;
+    private transient ICityDAO dao = null;
 
     public City(String name, double zone,String country){
         this.id = UUID.randomUUID().toString();
@@ -21,6 +24,15 @@ class City implements Serializable,Persistable{
         this.timeZone=zone;
         this.status=false;
         this.counrtyCode=country;
+    }
+
+    public City(String name, double zone,String country, ICityDAO dao){
+        this.id = UUID.randomUUID().toString();
+        this.cityName=name;
+        this.timeZone=zone;
+        this.status=false;
+        this.counrtyCode=country;
+        this.dao=dao;
     }
 
     public String getName(){
@@ -70,34 +82,41 @@ class City implements Serializable,Persistable{
         }
     }
 
-    @Override
-    public String getId() {
-        return cityName;
+
+    public void save() {
+
+        if (dao != null) {
+
+            Hashtable<String, String> data = new Hashtable<String, String>();
+
+            data.put("id", id);
+            data.put("cityName", cityName);
+            data.put("timeZone", Double.toString(timeZone));
+            data.put("status", Boolean.toString(status));
+            data.put("counrtyCode", counrtyCode);
+            dao.save(data);
+        }
     }
 
-    @Override
-    public String getType() {
-        return getClass().getName();
+    public void load(Hashtable<String,String> data){
+        id = data.get("id");
+        timeZone = Double.parseDouble(data.get("timeZone")); //Converting String to Double
+        cityName = data.get("cityName");
+        status = data.get("status").equals("true"); //Converting String to Boolean Conversion
+        counrtyCode = data.get("counrtyCode");
     }
 
-    @Override
-    public void save(SQLiteDatabase dataStore) {
-        ContentValues values = new ContentValues();
-        values.put("id",id);
-        values.put("cityName",cityName);
-        values.put("timeZone",timeZone);
-        values.put("status",status);
-        values.put("counrtyCode",counrtyCode);
+    public static ArrayList<City> load(ICityDAO dao){
+        ArrayList<City> Cities = new ArrayList<City>();
+        if(dao != null){
 
-        dataStore.insertWithOnConflict("SelectedCities",null,values,SQLiteDatabase.CONFLICT_REPLACE);
-    }
-
-    @Override
-    public void load(Cursor dataStore) {
-        id = dataStore.getString(dataStore.getColumnIndex("id"));
-        cityName = dataStore.getString(dataStore.getColumnIndex("cityName"));
-        timeZone = Double.parseDouble(dataStore.getString(dataStore.getColumnIndex("timeZone"))); //Converting String to Double
-        status = ((dataStore.getString(dataStore.getColumnIndex("status"))).equals("true")); //Converting String to Boolean Conversion
-        counrtyCode = dataStore.getString(dataStore.getColumnIndex("counrtyCode"));
+            ArrayList<Hashtable<String,String>> objects = dao.load();
+            for(Hashtable<String,String> obj : objects){
+                City city = new City("",0,"",dao); //Dummy Data
+                city.load(obj);
+                Cities.add(city);
+            }
+        }
+        return Cities;
     }
 }

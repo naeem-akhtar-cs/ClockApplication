@@ -7,21 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CitiesDBHelper extends SQLiteOpenHelper{
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "SelectedCities.db";
+    public static final String DATABASE_NAME = "SelectedCities1.db";
 
     public CitiesDBHelper(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
-
     public void onCreate(SQLiteDatabase db){
-
-        String sql = "CREATE TABLE SelectedCities (id TEXT PRIMARY KEY," +
-                            "cityName TEXT," +
-                            "timeZone TEXT," +
-                            "status TEXT," +
-                            "counrtyCode TEXT)";
-
+        String sql = "CREATE TABLE MyList (id TEXT PRIMARY KEY,timeZone TEXT,cityName TEXT,status TEXT,counrtyCode TEXT)";
         db.execSQL(sql);
     }
 

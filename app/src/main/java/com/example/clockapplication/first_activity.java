@@ -12,6 +12,8 @@ public class first_activity extends AppCompatActivity {
     private ArrayList<City> SelectedCities;
     private ArrayList<City> citiesList;
 
+    ICityDAO dao;
+
     final int REQUEST_CODE = 1;
     ListView myList;
     SelectedCityListAdapter myAdapter;
@@ -21,11 +23,8 @@ public class first_activity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        if(SelectedCities==null) {
-            SelectedCities = new ArrayList<City>();
-            PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
-            collection.load(getApplicationContext());
-        }
+        dao = new CitiesDbDAO(this);
+
         setContentView(R.layout.first_activity);
     }
 
@@ -58,16 +57,15 @@ public class first_activity extends AppCompatActivity {
 
     public void onPause(){
         super.onPause();
-        PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
-        collection.save(getApplicationContext());
+
+        for(City city : SelectedCities){
+            city.save();
+        }
     }
 
-    public void onResume() {
+    public void onResume(){
         super.onResume();
-        if (SelectedCities == null) {
-            SelectedCities = new ArrayList<City>();
-            PersistableCollection<City> collection = new PersistableCollection(SelectedCities);
-            collection.load(getApplicationContext());
-        }
+
+        SelectedCities = City.load(dao);
     }
 }
