@@ -54,6 +54,7 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
             } else {
                 city.setCheck(false);
             }
+            city.updateCheck();
         });
 
         holder.cBox.setChecked(city.getCheck());

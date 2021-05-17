@@ -7,19 +7,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CitiesDBHelper extends SQLiteOpenHelper{
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "SelectedCities1.db";
+    public static final String DATABASE_NAME = "myCities.db";
 
     public CitiesDBHelper(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
     public void onCreate(SQLiteDatabase db){
-        String sql = "CREATE TABLE MyList (id TEXT PRIMARY KEY,timezone TEXT,cityname TEXT,status TEXT,counrtycode TEXT)";
+        String sql = "CREATE TABLE MyList1 (id TEXT PRIMARY KEY,timezone TEXT,cityname TEXT,status TEXT,counrtycode TEXT)";
         db.execSQL(sql);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS SelectedCities");
+        db.execSQL("DROP TABLE IF EXISTS MyList1");
         onCreate(db);
     }
 

@@ -31,7 +31,6 @@ public class first_activity extends AppCompatActivity {
 
     public void GoToList(View view){
         Intent intent=new Intent(this,MainActivity.class);
-        intent.putExtra("SelectedCities",SelectedCities);
         startActivityForResult(intent,REQUEST_CODE);
     }
 
@@ -51,7 +50,6 @@ public class first_activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                SelectedCities= (ArrayList<City>) data.getSerializableExtra("SelectedCities");
                 startActivity();
             }
         }

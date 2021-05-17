@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         //Loading from DatBase
         citiesList = City.load(dao,false);
 
-        //if not found in Db, load from list
-       // if(citiesList.isEmpty()) {
-       //     citiesList = City.GenerateCities(dao);
-      //  }
+        //if not found in DB, load from list
+        if(citiesList.isEmpty()) {
+            citiesList = City.GenerateCities(dao);
+        }
 
         //Setting Up Text Filter
         text=findViewById(R.id.searchText);
@@ -96,13 +96,5 @@ public class MainActivity extends AppCompatActivity {
             citiesList = (ArrayList<City>) savedInstanceState.getSerializable("citiesList");
         }
         catch(Exception ex){ }
-    }
-
-    public void onPause(){
-        super.onPause();
-
-        for(City city : citiesList){
-            city.save();
-        }
     }
 }

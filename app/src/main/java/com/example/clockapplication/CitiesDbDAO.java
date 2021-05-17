@@ -30,7 +30,26 @@ public class CitiesDbDAO implements ICityDAO{
             content.put(key,attributes.get(key));
         }
 
-        db.insert("MyList",null,content);
+        db.insert("MyList1",null,content);
+    }
+
+    public void updateCheck(City city){
+
+        CitiesDBHelper dbHelper = new CitiesDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("id", city.getID());
+        contentValues.put("cityname", city.getName());
+        contentValues.put("timezone", Double.toString(city.getZone()));
+        contentValues.put("status", Boolean.toString(city.getCheck()));
+        contentValues.put("counrtycode", city.getCounrtyCode());
+
+        String whereClause = "id=?";
+        String whereArgs[] = {city.getID()};
+
+        db.update("MyList1", contentValues, whereClause, whereArgs);
     }
 
     @Override
@@ -45,7 +64,7 @@ public class CitiesDbDAO implements ICityDAO{
         CitiesDBHelper dbHelper = new CitiesDBHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM MyList";
+        String query = "SELECT * FROM MyList1";
         Cursor cursor = db.rawQuery(query,null);
 
         ArrayList<Hashtable<String,String>> objects = new ArrayList<>();

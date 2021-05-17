@@ -18,14 +18,6 @@ class City implements Serializable{
     private String counrtyCode;
     private transient ICityDAO dao = null;
 
-    public City(String name, double zone,String country){
-        this.id = UUID.randomUUID().toString();
-        this.cityName=name;
-        this.timeZone=zone;
-        this.status=false;
-        this.counrtyCode=country;
-    }
-
     public City(String name, double zone,String country, ICityDAO dao){
         this.id = UUID.randomUUID().toString();
         this.cityName=name;
@@ -33,6 +25,12 @@ class City implements Serializable{
         this.status=false;
         this.counrtyCode=country;
         this.dao=dao;
+    }
+
+
+
+    public String getID(){
+        return id;
     }
 
     public String getName(){
@@ -49,6 +47,14 @@ class City implements Serializable{
 
     public void setCheck(Boolean val){
         this.status=val;
+    }
+
+    public String getCounrtyCode(){
+        return counrtyCode;
+    }
+
+    public void updateCheck(){
+        dao.updateCheck(this);
     }
 
     public int getFlag(){
@@ -81,7 +87,6 @@ class City implements Serializable{
                 return 0;
         }
     }
-
 
     public void save() {
 
@@ -160,6 +165,11 @@ class City implements Serializable{
         citiesList.add(new City("Baghdad",3,"iq",dao));
         citiesList.add(new City("Tehran",3.5,"ir",dao));
         citiesList.add(new City("Lahore",5,"pk",dao));
+
+        //Adding List in Database
+        for(City city : citiesList){
+            city.save();
+        }
 
         return citiesList;
     }
