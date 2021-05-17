@@ -106,7 +106,7 @@ class City implements Serializable{
         counrtyCode = data.get("counrtycode");
     }
 
-    public static ArrayList<City> load(ICityDAO dao){
+    public static ArrayList<City> load(ICityDAO dao, Boolean check){
         ArrayList<City> Cities = new ArrayList<City>();
         if(dao != null){
 
@@ -114,7 +114,14 @@ class City implements Serializable{
             for(Hashtable<String,String> obj : objects){
                 City city = new City("",0,"",dao); //Dummy Data
                 city.load(obj);
-                Cities.add(city);
+                if(check) {
+                    if(city.getCheck()) {
+                        Cities.add(city);
+                    }
+                }
+                else {
+                    Cities.add(city);
+                }
             }
         }
         return Cities;

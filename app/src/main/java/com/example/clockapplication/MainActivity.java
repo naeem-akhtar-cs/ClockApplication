@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<City> citiesList;
-    ArrayList<City> SelectedCities;
 
     CitiesDbDAO dao;
 
@@ -34,16 +33,19 @@ public class MainActivity extends AppCompatActivity {
 
         dao=new CitiesDbDAO(this);
 
-        Intent intent = getIntent();
-        SelectedCities=(ArrayList<City>) intent.getSerializableExtra("SelectedCities");
-
         recyclerView= findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        citiesList=City.GenerateCities(dao);
+        //Loading from DatBase
+        citiesList = City.load(dao,false);
+
+        //if not found in Db, load from list
+       // if(citiesList.isEmpty()) {
+       //     citiesList = City.GenerateCities(dao);
+      //  }
 
         //Setting Up Text Filter
         text=findViewById(R.id.searchText);
@@ -60,14 +62,13 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) { }
         });
 
-        myAdapter = new CityListAdapter(this.citiesList,this.SelectedCities);
+        myAdapter = new CityListAdapter(this.citiesList);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),layoutManager.getHeight()));
         recyclerView.setAdapter(myAdapter);
     }
 
     private void prepareResult(){
         Intent intent = new Intent();
-        intent.putExtra("SelectedCities",this.SelectedCities);
         setResult(RESULT_OK, intent);
     }
 
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public void onPause(){
         super.onPause();
 
-        for(City city : SelectedCities){
+        for(City city : citiesList){
             city.save();
         }
     }

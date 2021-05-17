@@ -21,16 +21,14 @@ import java.util.TimeZone;
 public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHolder> implements Filterable {
 
     private final ArrayList<City> citiesList;
-    private final ArrayList<City> SelectedCities;
 
     private ArrayList<City> FilteredCitiesList;
     private Filter filter;
 
-    public CityListAdapter(ArrayList<City> citiesList, ArrayList<City> SelectedCities){
+    public CityListAdapter(ArrayList<City> citiesList){
         super();
         this.citiesList=citiesList;
         this.FilteredCitiesList=citiesList;
-        this.SelectedCities=SelectedCities;
     }
 
     public City getItem(int position){ return FilteredCitiesList.get(position); }
@@ -53,17 +51,8 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
         holder.cBox.setOnClickListener(v -> {
             if(((CheckBox) v).isChecked()){
                 city.setCheck(true);
-                SelectedCities.add(city);
             } else {
                 city.setCheck(false);
-
-                //Inefficient
-                for(int i=0;i<SelectedCities.size();i++){
-                    if(SelectedCities.get(i).getName().equals(city.getName())){
-                        SelectedCities.remove(i);
-                        break;
-                    }
-                }
             }
         });
 

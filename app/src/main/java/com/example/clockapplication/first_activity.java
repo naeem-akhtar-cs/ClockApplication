@@ -60,7 +60,7 @@ public class first_activity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        SelectedCities = City.load(dao);
+        SelectedCities = City.load(dao,true);
         startActivity();
     }
 }
