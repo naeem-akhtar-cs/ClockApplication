@@ -31,9 +31,10 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
         this.FilteredCitiesList=citiesList;
     }
 
-    public City getItem(int position){ return FilteredCitiesList.get(position); }
+    public City getItem(int position){
+        return FilteredCitiesList.get(position);
+    }
 
-    @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 

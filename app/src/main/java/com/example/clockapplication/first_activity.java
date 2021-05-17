@@ -3,8 +3,12 @@ package com.example.clockapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class first_activity extends AppCompatActivity {
@@ -14,19 +18,23 @@ public class first_activity extends AppCompatActivity {
     ICityDAO dao;
 
     final int REQUEST_CODE = 1;
-    ListView myList;
-    SelectedCityListAdapter myAdapter;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter myAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        dao = new CitiesDbDAO(this);
         setContentView(R.layout.first_activity);
-    }
 
-    public ICityDAO getDAO(){
-        return dao;
+        recyclerView= findViewById(R.id.mySelectedList);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        dao = new CitiesDbDAO(this);
     }
 
     public void GoToList(View view){
@@ -40,19 +48,26 @@ public class first_activity extends AppCompatActivity {
     }
 
     public void startActivity(){
-        myList=findViewById(R.id.mySelectedList);
-        myAdapter = new SelectedCityListAdapter(this, SelectedCities);
-        myList.setAdapter(myAdapter);
+
+        myAdapter = new SelectedCityListAdapter(this.SelectedCities);
+
+        //Jugaar Here (If Statement)
+        if(myAdapter==null) {
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
+        }
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        /*
         if(requestCode == REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                startActivity();
+                //Code to Implement
             }
         }
+         */
     }
 
     public void onResume(){

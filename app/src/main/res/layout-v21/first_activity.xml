@@ -20,23 +20,11 @@
     android:backgroundTint="#EE913D3D"
     android:layout_centerInParent="true"/>
 
-
-<!--    <Button-->
-<!--        android:id="@+id/listButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:onClick="GoToList"-->
-<!--        android:text="@string/Plus"-->
-<!--        android:textSize="30sp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        tools:ignore="RelativeOverlap"-->
-<!--        android:layout_alignParentRight="true" />-->
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mySelectedList"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="#bfbdbd"/>
+        android:background="#bfbdbd"
+        />
 
 </RelativeLayout>
