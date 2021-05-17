@@ -90,20 +90,20 @@ class City implements Serializable{
             Hashtable<String, String> data = new Hashtable<String, String>();
 
             data.put("id", id);
-            data.put("cityName", cityName);
-            data.put("timeZone", Double.toString(timeZone));
+            data.put("cityname", cityName);
+            data.put("timezone", Double.toString(timeZone));
             data.put("status", Boolean.toString(status));
-            data.put("counrtyCode", counrtyCode);
+            data.put("counrtycode", counrtyCode);
             dao.save(data);
         }
     }
 
     public void load(Hashtable<String,String> data){
         id = data.get("id");
-        timeZone = Double.parseDouble(data.get("timeZone")); //Converting String to Double
-        cityName = data.get("cityName");
+        timeZone = Double.parseDouble(data.get("timezone")); //Converting String to Double
+        cityName = data.get("cityname");
         status = data.get("status").equals("true"); //Converting String to Boolean Conversion
-        counrtyCode = data.get("counrtyCode");
+        counrtyCode = data.get("counrtycode");
     }
 
     public static ArrayList<City> load(ICityDAO dao){
@@ -118,5 +118,42 @@ class City implements Serializable{
             }
         }
         return Cities;
+    }
+
+    public static ArrayList<City> GenerateCities(CitiesDbDAO dao){
+
+        ArrayList<City> citiesList = new ArrayList<>();
+
+        citiesList.add(new City("Shanghai",8,"cn",dao));
+        citiesList.add(new City("Istanbul",20,"tr",dao));
+        citiesList.add(new City("Buenos Aires",-3,"ar",dao));
+        citiesList.add(new City("Tel Aviv",2,"il",dao));
+        citiesList.add(new City("Mumbai",5.5,"in",dao));
+        citiesList.add(new City("Mexico City",-6,"mx",dao));
+        citiesList.add(new City("Beijing",8,"cn",dao));
+        citiesList.add(new City("Karachi",5,"pk",dao));
+        citiesList.add(new City("Tianjin",8,"cn",dao));
+        citiesList.add(new City("Guangzhou",8,"hk",dao));
+        citiesList.add(new City("Delhi",5.5,"in",dao));
+        citiesList.add(new City("Moscow",3,"ru",dao));
+        citiesList.add(new City("Shenzhen",8,"cn",dao));
+        citiesList.add(new City("Dhaka",6,"bd",dao));
+        citiesList.add(new City("Seoul",9,"kr",dao));
+        citiesList.add(new City("Sao Paulo",-3,"br",dao));
+        citiesList.add(new City("Lagos",1,"ng",dao));
+        citiesList.add(new City("Jakarta",7,"my",dao));
+        citiesList.add(new City("Tokyo",9,"jp",dao));
+        citiesList.add(new City("New York City",-5,"us",dao));
+        citiesList.add(new City("Taipei",8,"tw",dao));
+        citiesList.add(new City("Kinshasa",1,"cd",dao));
+        citiesList.add(new City("Lima",-5,"pe",dao));
+        citiesList.add(new City("Cairo",2,"eg",dao));
+        citiesList.add(new City("Bogotá",-5,"co",dao));
+        citiesList.add(new City("London",0,"gb",dao));
+        citiesList.add(new City("Baghdad",3,"iq",dao));
+        citiesList.add(new City("Tehran",3.5,"ir",dao));
+        citiesList.add(new City("Lahore",5,"pk",dao));
+
+        return citiesList;
     }
 }

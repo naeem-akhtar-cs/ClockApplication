@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class first_activity extends AppCompatActivity {
 
     private ArrayList<City> SelectedCities;
-    private ArrayList<City> citiesList;
 
     ICityDAO dao;
 
@@ -22,16 +21,17 @@ public class first_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         dao = new CitiesDbDAO(this);
-
         setContentView(R.layout.first_activity);
+    }
+
+    public ICityDAO getDAO(){
+        return dao;
     }
 
     public void GoToList(View view){
         Intent intent=new Intent(this,MainActivity.class);
         intent.putExtra("SelectedCities",SelectedCities);
-        intent.putExtra("citiesList",citiesList);
         startActivityForResult(intent,REQUEST_CODE);
     }
 
@@ -40,26 +40,20 @@ public class first_activity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    public void startActivity(){
+        myList=findViewById(R.id.mySelectedList);
+        myAdapter = new SelectedCityListAdapter(this, SelectedCities);
+        myList.setAdapter(myAdapter);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 SelectedCities= (ArrayList<City>) data.getSerializableExtra("SelectedCities");
-                citiesList=(ArrayList<City>) data.getSerializableExtra("citiesList");
-
-                myList=findViewById(R.id.mySelectedList);
-                myAdapter = new SelectedCityListAdapter(this, SelectedCities);
-                myList.setAdapter(myAdapter);
+                startActivity();
             }
-        }
-    }
-
-    public void onPause(){
-        super.onPause();
-
-        for(City city : SelectedCities){
-            city.save();
         }
     }
 
@@ -67,5 +61,6 @@ public class first_activity extends AppCompatActivity {
         super.onResume();
 
         SelectedCities = City.load(dao);
+        startActivity();
     }
 }

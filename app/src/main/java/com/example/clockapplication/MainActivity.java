@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<City> citiesList;
     ArrayList<City> SelectedCities;
 
+    CitiesDbDAO dao;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -30,48 +32,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dao=new CitiesDbDAO(this);
+
         Intent intent = getIntent();
-        SelectedCities = (ArrayList<City>) intent.getSerializableExtra("SelectedCities");
-        citiesList=(ArrayList<City>) intent.getSerializableExtra("citiesList");
+        SelectedCities=(ArrayList<City>) intent.getSerializableExtra("SelectedCities");
+
         recyclerView= findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-        if(citiesList == null){
-            citiesList = new ArrayList<>();
-            citiesList.add(new City("Shanghai",8,"cn"));
-            citiesList.add(new City("Istanbul",20,"tr"));
-            citiesList.add(new City("Buenos Aires",-3,"ar"));
-            citiesList.add(new City("Tel Aviv",2,"il"));
-            citiesList.add(new City("Mumbai",5.5,"in"));
-            citiesList.add(new City("Mexico City",-6,"mx"));
-            citiesList.add(new City("Beijing",8,"cn"));
-            citiesList.add(new City("Karachi",5,"pk"));
-            citiesList.add(new City("Tianjin",8,"cn"));
-            citiesList.add(new City("Guangzhou",8,"hk"));
-            citiesList.add(new City("Delhi",5.5,"in"));
-            citiesList.add(new City("Moscow",3,"ru"));
-            citiesList.add(new City("Shenzhen",8,"cn"));
-            citiesList.add(new City("Dhaka",6,"bd"));
-            citiesList.add(new City("Seoul",9,"kr"));
-            citiesList.add(new City("Sao Paulo",-3,"br"));
-            citiesList.add(new City("Lagos",1,"ng"));
-            citiesList.add(new City("Jakarta",7,"my"));
-            citiesList.add(new City("Tokyo",9,"jp"));
-            citiesList.add(new City("New York City",-5,"us"));
-            citiesList.add(new City("Taipei",8,"tw"));
-            citiesList.add(new City("Kinshasa",1,"cd"));
-            citiesList.add(new City("Lima",-5,"pe"));
-            citiesList.add(new City("Cairo",2,"eg"));
-            citiesList.add(new City("Bogotá",-5,"co"));
-            citiesList.add(new City("London",0,"gb"));
-            citiesList.add(new City("Baghdad",3,"iq"));
-            citiesList.add(new City("Tehran",3.5,"ir"));
-            citiesList.add(new City("Lahore",5,"pk"));
-        }
+        citiesList=City.GenerateCities(dao);
 
         //Setting Up Text Filter
         text=findViewById(R.id.searchText);
@@ -88,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) { }
         });
 
-
         myAdapter = new CityListAdapter(this.citiesList,this.SelectedCities);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),layoutManager.getHeight()));
         recyclerView.setAdapter(myAdapter);
@@ -97,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private void prepareResult(){
         Intent intent = new Intent();
         intent.putExtra("SelectedCities",this.SelectedCities);
-        intent.putExtra("citiesList",this.citiesList);
         setResult(RESULT_OK, intent);
     }
 
@@ -125,5 +95,13 @@ public class MainActivity extends AppCompatActivity {
             citiesList = (ArrayList<City>) savedInstanceState.getSerializable("citiesList");
         }
         catch(Exception ex){ }
+    }
+
+    public void onPause(){
+        super.onPause();
+
+        for(City city : SelectedCities){
+            city.save();
+        }
     }
 }

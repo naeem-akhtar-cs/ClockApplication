@@ -48,9 +48,9 @@ public class CitiesDbDAO implements ICityDAO{
         String query = "SELECT * FROM MyList";
         Cursor cursor = db.rawQuery(query,null);
 
-        ArrayList<Hashtable<String,String>> objects = new ArrayList<Hashtable<String, String>>();
+        ArrayList<Hashtable<String,String>> objects = new ArrayList<>();
         while(cursor.moveToNext()){
-            Hashtable<String,String> obj = new Hashtable<String, String>();
+            Hashtable<String,String> obj = new Hashtable<>();
             String [] columns = cursor.getColumnNames();
             for(String col : columns){
                 obj.put(col.toLowerCase(),cursor.getString(cursor.getColumnIndex(col)));

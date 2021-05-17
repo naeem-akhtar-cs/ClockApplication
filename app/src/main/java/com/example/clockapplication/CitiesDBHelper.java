@@ -14,7 +14,7 @@ public class CitiesDBHelper extends SQLiteOpenHelper{
     }
 
     public void onCreate(SQLiteDatabase db){
-        String sql = "CREATE TABLE MyList (id TEXT PRIMARY KEY,timeZone TEXT,cityName TEXT,status TEXT,counrtyCode TEXT)";
+        String sql = "CREATE TABLE MyList (id TEXT PRIMARY KEY,timezone TEXT,cityname TEXT,status TEXT,counrtycode TEXT)";
         db.execSQL(sql);
     }
 
