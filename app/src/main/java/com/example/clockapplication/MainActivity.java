@@ -17,13 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<City> citiesList;
-
     CitiesDbDAO dao;
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter myAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
     EditText text;
 
     @Override
@@ -33,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
         dao=new CitiesDbDAO(this);
 
-        recyclerView= findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager=new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         //Loading from DatBase
@@ -55,15 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                //myAdapter.getFilter().filter(text.toString());
+              //  getFilter().filter(text.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) { }
         });
 
-        myAdapter = new CityListAdapter(this.citiesList);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),layoutManager.getHeight()));
+        RecyclerView.Adapter myAdapter = new CityListAdapter(this.citiesList);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
         recyclerView.setAdapter(myAdapter);
     }
 

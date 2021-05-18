@@ -3,11 +3,8 @@ package com.example.clockapplication;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Objects;
 import java.util.UUID;
-
-import android.content.ContentValues;
-import android.database.sqlite.*;
-import android.database.*;
 
 class City implements Serializable{
 
@@ -16,7 +13,7 @@ class City implements Serializable{
     private double timeZone;
     private Boolean status;
     private String counrtyCode;
-    private transient ICityDAO dao = null;
+    private final transient ICityDAO dao;
 
     public City(String name, double zone,String country, ICityDAO dao){
         this.id = UUID.randomUUID().toString();
@@ -92,7 +89,7 @@ class City implements Serializable{
 
         if (dao != null) {
 
-            Hashtable<String, String> data = new Hashtable<String, String>();
+            Hashtable<String, String> data = new Hashtable<>();
 
             data.put("id", id);
             data.put("cityname", cityName);
@@ -105,7 +102,7 @@ class City implements Serializable{
 
     public void load(Hashtable<String,String> data){
         id = data.get("id");
-        timeZone = Double.parseDouble(data.get("timezone")); //Converting String to Double
+        timeZone = Double.parseDouble(Objects.requireNonNull(data.get("timezone"))); //Converting String to Double
         cityName = data.get("cityname");
         status = data.get("status").equals("true"); //Converting String to Boolean Conversion
         counrtyCode = data.get("counrtycode");

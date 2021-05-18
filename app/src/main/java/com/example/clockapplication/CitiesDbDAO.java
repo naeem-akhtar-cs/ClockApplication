@@ -53,13 +53,6 @@ public class CitiesDbDAO implements ICityDAO{
     }
 
     @Override
-    public void save(ArrayList<Hashtable<String, String>> objects) {
-        for(Hashtable<String,String> obj : objects){
-            save(obj);
-        }
-    }
-
-    @Override
     public ArrayList<Hashtable<String, String>> load() {
         CitiesDBHelper dbHelper = new CitiesDBHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -78,10 +71,5 @@ public class CitiesDbDAO implements ICityDAO{
         }
 
         return objects;
-    }
-
-    @Override
-    public Hashtable<String, String> load(String id) {
-        return null;
     }
 }

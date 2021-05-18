@@ -50,11 +50,7 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
         City city=getItem(position);
 
         holder.cBox.setOnClickListener(v -> {
-            if(((CheckBox) v).isChecked()){
-                city.setCheck(true);
-            } else {
-                city.setCheck(false);
-            }
+            city.setCheck(((CheckBox) v).isChecked());
             city.updateCheck();
         });
 
@@ -117,7 +113,7 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.viewHo
         }
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder {
+    public static class viewHolder extends RecyclerView.ViewHolder {
         public CheckBox cBox;
         public TextView tView;
         public TextView time;

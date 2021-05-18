@@ -61,7 +61,7 @@ public class SelectedCityListAdapter extends RecyclerView.Adapter<SelectedCityLi
 
             String MyTime = df.format(date.getTime());
 
-            String STime[] = MyTime.split(":|\\ ");
+            String[] STime = MyTime.split(":|\\ ");
 
             Calendar MyCal = Calendar.getInstance();
 
@@ -143,7 +143,7 @@ public class SelectedCityListAdapter extends RecyclerView.Adapter<SelectedCityLi
         holder.image.setImageResource(city.getFlag());
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder {
+    public static class viewHolder extends RecyclerView.ViewHolder {
         public TextView Hmins;
         public TextView AP;
         public TextView seconds;

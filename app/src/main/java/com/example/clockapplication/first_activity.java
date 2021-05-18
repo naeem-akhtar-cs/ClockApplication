@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +19,6 @@ public class first_activity extends AppCompatActivity {
     final int REQUEST_CODE = 1;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter myAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +28,7 @@ public class first_activity extends AppCompatActivity {
         recyclerView= findViewById(R.id.mySelectedList);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager=new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         dao = new CitiesDbDAO(this);
@@ -49,12 +46,13 @@ public class first_activity extends AppCompatActivity {
 
     public void startActivity(){
 
-        myAdapter = new SelectedCityListAdapter(this.SelectedCities);
+        RecyclerView.Adapter myAdapter = new SelectedCityListAdapter(this.SelectedCities);
 
-        //Jugaar Here (If Statement)
-        if(myAdapter==null) {
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
-        }
+        //Jugaar Here (If Statement); Exception when returns from second activity
+       // if(myAdapter ==null) {
+       //     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
+       // }
+
         recyclerView.setAdapter(myAdapter);
     }
 
