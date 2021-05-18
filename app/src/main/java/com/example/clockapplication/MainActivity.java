@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-              //  getFilter().filter(text.toString());
+                //GetFilter().filter(text.toString());
             }
 
             @Override
