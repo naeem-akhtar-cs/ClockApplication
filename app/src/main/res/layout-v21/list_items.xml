@@ -10,14 +10,15 @@
         android:id="@+id/cBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="@color/white"
+        android:buttonTint="@color/black"
         android:layout_marginStart="50dp"/>
 
     <TextView
         android:id="@+id/myText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:text="Lahore"
+        android:textColor="@color/black"
         android:layout_centerInParent="true"
         />
 
@@ -25,7 +26,8 @@
         android:id="@+id/timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:text="9 AM"
+        android:textColor="@color/black"
         android:layout_alignParentEnd="true"
         android:paddingEnd="10dp"
         tools:ignore="RtlSymmetry" />

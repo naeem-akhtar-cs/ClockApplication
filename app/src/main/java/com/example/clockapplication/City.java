@@ -74,14 +74,14 @@ class City implements Serializable{
             case "my": return R.drawable.my;
             case "ng": return R.drawable.ng;
             case "pe": return R.drawable.pe;
-            case "pk": return R.drawable.pk;
             case "ru": return R.drawable.ru;
             case "tr": return R.drawable.tr;
             case "tw": return R.drawable.tw;
             case "us": return R.drawable.us;
             case "il": return R.drawable.il;
+//            case "pk": return R.drawable.pk;
             default:
-                return 0;
+                return R.drawable.pk;
         }
     }
 
@@ -112,18 +112,11 @@ class City implements Serializable{
         ArrayList<City> Cities = new ArrayList<City>();
         if(dao != null){
 
-            ArrayList<Hashtable<String,String>> objects = dao.load();
+            ArrayList<Hashtable<String,String>> objects = dao.load(check);
             for(Hashtable<String,String> obj : objects){
                 City city = new City("",0,"",dao); //Dummy Data
                 city.load(obj);
-                if(check) {
-                    if(city.getCheck()) {
-                        Cities.add(city);
-                    }
-                }
-                else {
-                    Cities.add(city);
-                }
+                Cities.add(city);
             }
         }
         return Cities;

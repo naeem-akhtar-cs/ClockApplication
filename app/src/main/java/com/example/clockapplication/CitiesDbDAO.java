@@ -53,11 +53,14 @@ public class CitiesDbDAO implements ICityDAO{
     }
 
     @Override
-    public ArrayList<Hashtable<String, String>> load() {
+    public ArrayList<Hashtable<String, String>> load(boolean loadSelected) {
         CitiesDBHelper dbHelper = new CitiesDBHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM MyList1";
+        String query= "SELECT * FROM MyList1";
+
+        if(loadSelected) query += " WHERE status='true'";
+
         Cursor cursor = db.rawQuery(query,null);
 
         ArrayList<Hashtable<String,String>> objects = new ArrayList<>();

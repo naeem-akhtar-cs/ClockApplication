@@ -5,6 +5,6 @@ import java.util.Hashtable;
 
 public interface ICityDAO {
     void save(Hashtable<String, String> attributes);
-    ArrayList<Hashtable<String,String>> load();
+    ArrayList<Hashtable<String,String>> load(boolean loadSelected);
     void updateCheck(City city);
 }

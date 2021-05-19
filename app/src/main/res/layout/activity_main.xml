@@ -15,28 +15,29 @@
 
         <Button
             android:id="@+id/HomeButton"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:onClick="ShowList"
-            app:backgroundTint="#1F68E8"
+            app:backgroundTint="#FFFF"
             android:background="#EE913D3D"
+            android:visibility="invisible"
             app:icon="@drawable/abc_vector_test" />
 
         <EditText
             android:id="@+id/searchText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColorHint="@color/white"
-            android:background="#4A361D"
+            android:textColorHint="@color/black"
+            android:background="#FFFF"
             android:hint="@string/search_here"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
     </LinearLayout>
     
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#1F68E8"
+        android:background="#FFFF"
         />
 
 </LinearLayout>

@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
             citiesList = City.GenerateCities(dao);
         }
 
+        RecyclerView.Adapter myAdapter = new CityListAdapter(this.citiesList);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
+        recyclerView.setAdapter(myAdapter);
+
         //Setting Up Text Filter
         text=findViewById(R.id.searchText);
         text.addTextChangedListener(new TextWatcher() {
@@ -50,15 +54,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 //GetFilter().filter(text.toString());
+                ((CityListAdapter)myAdapter).getFilter().filter(text.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) { }
         });
 
-        RecyclerView.Adapter myAdapter = new CityListAdapter(this.citiesList);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
-        recyclerView.setAdapter(myAdapter);
+
     }
 
     private void prepareResult(){
