@@ -34,8 +34,6 @@ class City implements Serializable {
         this.dao=dao;
     }
 
-
-
     public String getID(){
         return id;
     }
@@ -133,7 +131,7 @@ class City implements Serializable {
         return Cities;
     }
 
-        public static ArrayList<City> GenerateCities(CitiesDbDAO dao) {
+    public static ArrayList<City> GenerateCities(CitiesDbDAO dao) {
 
             ArrayList<City> citiesList = new ArrayList<>();
 

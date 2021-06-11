@@ -2,6 +2,7 @@ package com.example.clockapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class first_activity extends AppCompatActivity {
     final int REQUEST_CODE = 1;
 
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +46,19 @@ public class first_activity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    /*
     public void startActivity(){
 
-        RecyclerView.Adapter myAdapter = new SelectedCityListAdapter(this.SelectedCities);
+
 
         //Jugaar Here (If Statement); Exception when returns from second activity
        // if(myAdapter ==null) {
        //     recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getHeight()));
        // }
 
-        recyclerView.setAdapter(myAdapter);
+
     }
+*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -72,6 +76,30 @@ public class first_activity extends AppCompatActivity {
         super.onResume();
 
         SelectedCities = City.load(dao,true);
-        startActivity();
+
+        myAdapter = new SelectedCityListAdapter(this.SelectedCities);
+        recyclerView.setAdapter(myAdapter);
+
+        //Updating UI Very Second
+        //------------------------------------------------------------//
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while (!this.isInterrupted()) {
+                    try {
+                        Thread.sleep(2000);
+                        myAdapter = new SelectedCityListAdapter(SelectedCities);
+                        recyclerView.setAdapter(myAdapter);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        thread.start();
+        //------------------------------------------------------------//
+
     }
 }
