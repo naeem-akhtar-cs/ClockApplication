@@ -1,12 +1,22 @@
 package com.example.clockapplication;
 
+import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-class City implements Serializable{
+class City implements Serializable {
 
     private String id;
     private String cityName;
@@ -56,6 +66,7 @@ class City implements Serializable{
 
     public int getFlag(){
         switch (this.counrtyCode) {
+            case "af": return R.drawable.af;
             case "ar": return R.drawable.ar;
             case "bd": return R.drawable.bd;
             case "br": return R.drawable.br;
@@ -79,7 +90,7 @@ class City implements Serializable{
             case "tw": return R.drawable.tw;
             case "us": return R.drawable.us;
             case "il": return R.drawable.il;
-//            case "pk": return R.drawable.pk;
+
             default:
                 return R.drawable.pk;
         }
@@ -122,45 +133,102 @@ class City implements Serializable{
         return Cities;
     }
 
-    public static ArrayList<City> GenerateCities(CitiesDbDAO dao){
+        public static ArrayList<City> GenerateCities(CitiesDbDAO dao) {
 
-        ArrayList<City> citiesList = new ArrayList<>();
+            ArrayList<City> citiesList = new ArrayList<>();
 
-        citiesList.add(new City("Shanghai",8,"cn",dao));
-        citiesList.add(new City("Istanbul",20,"tr",dao));
-        citiesList.add(new City("Buenos Aires",-3,"ar",dao));
-        citiesList.add(new City("Tel Aviv",2,"il",dao));
-        citiesList.add(new City("Mumbai",5.5,"in",dao));
-        citiesList.add(new City("Mexico City",-6,"mx",dao));
-        citiesList.add(new City("Beijing",8,"cn",dao));
-        citiesList.add(new City("Karachi",5,"pk",dao));
-        citiesList.add(new City("Tianjin",8,"cn",dao));
-        citiesList.add(new City("Guangzhou",8,"hk",dao));
-        citiesList.add(new City("Delhi",5.5,"in",dao));
-        citiesList.add(new City("Moscow",3,"ru",dao));
-        citiesList.add(new City("Shenzhen",8,"cn",dao));
-        citiesList.add(new City("Dhaka",6,"bd",dao));
-        citiesList.add(new City("Seoul",9,"kr",dao));
-        citiesList.add(new City("Sao Paulo",-3,"br",dao));
-        citiesList.add(new City("Lagos",1,"ng",dao));
-        citiesList.add(new City("Jakarta",7,"my",dao));
-        citiesList.add(new City("Tokyo",9,"jp",dao));
-        citiesList.add(new City("New York City",-5,"us",dao));
-        citiesList.add(new City("Taipei",8,"tw",dao));
-        citiesList.add(new City("Kinshasa",1,"cd",dao));
-        citiesList.add(new City("Lima",-5,"pe",dao));
-        citiesList.add(new City("Cairo",2,"eg",dao));
-        citiesList.add(new City("Bogotá",-5,"co",dao));
-        citiesList.add(new City("London",0,"gb",dao));
-        citiesList.add(new City("Baghdad",3,"iq",dao));
-        citiesList.add(new City("Tehran",3.5,"ir",dao));
-        citiesList.add(new City("Lahore",5,"pk",dao));
+            ArrayList<String> timeZones = new ArrayList<>();
 
-        //Adding List in Database
-        for(City city : citiesList){
-            city.save();
+            timeZones.add("Asia/Kabul");
+            timeZones.add("Europe/Tirane");
+            timeZones.add("Africa/Algiers");
+            timeZones.add("Europe/Andorra");
+            timeZones.add("Asia/Yerevan");
+            timeZones.add("Australia/Adelaide");
+            timeZones.add("Europe/Vienna");
+            timeZones.add("Asia/Baku");
+            timeZones.add("Asia/Bahrain");
+            timeZones.add("Asia/Dhaka");
+            timeZones.add("Europe/Minsk");
+            timeZones.add("Europe/Brussels");
+            timeZones.add("Asia/Shanghai");
+            timeZones.add("Africa/Brazzaville");
+            timeZones.add("America/Havana");
+            timeZones.add("Asia/Famagusta");
+            timeZones.add("Europe/Copenhagen");
+            timeZones.add("Africa/Cairo");
+            timeZones.add("Europe/Berlin");
+            timeZones.add("Africa/Accra");
+            timeZones.add("Europe/Athens");
+            timeZones.add("Asia/Kolkata");
+            timeZones.add("Asia/Baghdad");
+            timeZones.add("Asia/Jerusalem");
+            timeZones.add("Asia/Amman");
+            timeZones.add("Asia/Kuwait");
+            timeZones.add("Asia/Seoul");
+            timeZones.add("Asia/Karachi");
+            timeZones.add("Europe/Istanbul");
+            timeZones.add("America/Adak");
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                        for (int i = 0; i < timeZones.size(); i++) {
+
+                            String CountryCode = null;
+                            double UTCCode = 0;
+                            String cityname = null;
+
+                            String line;
+
+                            try {
+                                URL url = new URL("https://api.timezonedb.com/v2.1/get-time-zone?key=3ZN5USVAZ546&format=xml&by=zone&zone=" + timeZones.get(i));
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.connect();
+
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                                line = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
+                                        reader.lines().collect(Collectors.joining()) :
+                                        "Please use Android Nougat.";
+
+                                String[] s2 = line.split("<countryCode>|</countryCode>");
+                                CountryCode = s2[1];
+
+                                s2 = line.split("<gmtOffset>|</gmtOffset>");
+                                UTCCode = Double.parseDouble(s2[1]);
+
+                                s2 = line.split("<zoneName>|</zoneName>");
+
+                                s2 = s2[1].split("/");
+                                cityname = s2[1];
+
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+                            if (cityname != null) {
+                                citiesList.add(new City(cityname, UTCCode / 3600, CountryCode.toLowerCase(), dao));
+                            }
+                        }
+                }
+            });
+
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //Adding List in Database
+            for (City city : citiesList) {
+                city.save();
+            }
+
+            //get it from database
+
+            return citiesList;
         }
-
-        return citiesList;
-    }
 }
