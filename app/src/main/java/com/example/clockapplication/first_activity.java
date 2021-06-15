@@ -89,7 +89,15 @@ public class first_activity extends AppCompatActivity {
                     try {
                         Thread.sleep(2000);
                         myAdapter = new SelectedCityListAdapter(SelectedCities);
-                        recyclerView.setAdapter(myAdapter);
+                        runOnUiThread(new Runnable() {
+                            
+                            @Override
+                            public void run() {
+                                // Stuff that updates the UI
+                                recyclerView.setAdapter(myAdapter);
+                            }
+                        });
+
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -103,3 +111,4 @@ public class first_activity extends AppCompatActivity {
 
     }
 }
+

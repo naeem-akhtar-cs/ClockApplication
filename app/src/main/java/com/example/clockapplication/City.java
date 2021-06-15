@@ -2,6 +2,7 @@ package com.example.clockapplication;
 
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -167,6 +168,9 @@ class City implements Serializable {
             timeZones.add("Asia/Karachi");
             timeZones.add("Europe/Istanbul");
             timeZones.add("America/Adak");
+
+            StrictMode.ThreadPolicy tp = StrictMode.ThreadPolicy.LAX;
+            StrictMode.setThreadPolicy(tp);
 
             Thread thread = new Thread(new Runnable() {
 
