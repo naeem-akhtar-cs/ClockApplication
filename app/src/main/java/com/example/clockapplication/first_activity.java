@@ -99,7 +99,7 @@ public class first_activity extends AppCompatActivity {
                         });
 
 
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
