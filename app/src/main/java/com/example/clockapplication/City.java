@@ -136,38 +136,6 @@ class City implements Serializable {
 
             ArrayList<City> citiesList = new ArrayList<>();
 
-            ArrayList<String> timeZones = new ArrayList<>();
-
-            timeZones.add("Asia/Kabul");
-            timeZones.add("Europe/Tirane");
-            timeZones.add("Africa/Algiers");
-            timeZones.add("Europe/Andorra");
-            timeZones.add("Asia/Yerevan");
-            timeZones.add("Australia/Adelaide");
-            timeZones.add("Europe/Vienna");
-            timeZones.add("Asia/Baku");
-            timeZones.add("Asia/Bahrain");
-            timeZones.add("Asia/Dhaka");
-            timeZones.add("Europe/Minsk");
-            timeZones.add("Europe/Brussels");
-            timeZones.add("Asia/Shanghai");
-            timeZones.add("Africa/Brazzaville");
-            timeZones.add("America/Havana");
-            timeZones.add("Asia/Famagusta");
-            timeZones.add("Europe/Copenhagen");
-            timeZones.add("Africa/Cairo");
-            timeZones.add("Europe/Berlin");
-            timeZones.add("Africa/Accra");
-            timeZones.add("Europe/Athens");
-            timeZones.add("Asia/Kolkata");
-            timeZones.add("Asia/Baghdad");
-            timeZones.add("Asia/Jerusalem");
-            timeZones.add("Asia/Amman");
-            timeZones.add("Asia/Kuwait");
-            timeZones.add("Asia/Seoul");
-            timeZones.add("Asia/Karachi");
-            timeZones.add("Europe/Istanbul");
-            timeZones.add("America/Adak");
 
             StrictMode.ThreadPolicy tp = StrictMode.ThreadPolicy.LAX;
             StrictMode.setThreadPolicy(tp);
@@ -177,42 +145,50 @@ class City implements Serializable {
                 @Override
                 public void run() {
 
-                        for (int i = 0; i < timeZones.size(); i++) {
+                    String line=null;
+
+                    try {
+                        URL url = new URL("https://api.timezonedb.com/v2.1/list-time-zone?key=3ZN5USVAZ546");
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.connect();
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                        line = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
+                                reader.lines().collect(Collectors.joining()) :
+                                "Please use Android Nougat.";
+
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+
+                    String[] allData = line.split("<zones>|</zones>");
+
+                    String allZones=allData[1];
+
+                    String[] splittedZones=allZones.split("<zone>|</zone>");
+
+                        for (int i = 1; i < splittedZones.length; i+=2) {
 
                             String CountryCode = null;
                             double UTCCode = 0;
                             String cityname = null;
 
-                            String line;
+                            String oneZone=splittedZones[i];
 
-                            try {
-                                URL url = new URL("https://api.timezonedb.com/v2.1/get-time-zone?key=3ZN5USVAZ546&format=xml&by=zone&zone=" + timeZones.get(i));
-                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                                connection.connect();
+                            String[] s2=oneZone.split("<countryCode>|</countryCode>");
 
-                                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                                line = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
-                                        reader.lines().collect(Collectors.joining()) :
-                                        "Please use Android Nougat.";
-
-                                String[] s2 = line.split("<countryCode>|</countryCode>");
                                 CountryCode = s2[1];
 
-                                s2 = line.split("<gmtOffset>|</gmtOffset>");
+                                s2 = oneZone.split("<gmtOffset>|</gmtOffset>");
                                 UTCCode = Double.parseDouble(s2[1]);
 
-                                s2 = line.split("<zoneName>|</zoneName>");
+                                s2 = oneZone.split("<zoneName>|</zoneName>");
 
                                 s2 = s2[1].split("/");
                                 cityname = s2[1];
 
-                            } catch (Exception e) {
-                                System.out.println(e);
-                            }
-                            if (cityname != null) {
                                 citiesList.add(new City(cityname, UTCCode / 3600, CountryCode.toLowerCase(), dao));
-                            }
                         }
                 }
             });
