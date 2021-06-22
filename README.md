@@ -39,4 +39,4 @@ Application uses Recycler View to print the list of cities on both screens. For 
 ## How to Run
 To run this project you need Android Studio version 42. or earlier with gradle version 7.0.2. You can directly clone the project with version control and use it to add new functions or install it into you phone. 
 
-If you face any difficulty understanding any part or running the project, feel free to reach me at naeem.akhtar.cs@gmail.com. Thanks
+If you face any difficulty understanding any part or running the project, feel free to reach me at naeem.akhtar.cs@gmail.com. Thanks.
