@@ -413,7 +413,7 @@ class City implements Serializable {
                                 s2 = oneZone.split("<zoneName>|</zoneName>");
 
                                 s2 = s2[1].split("/");
-                                cityname = s2[1];
+                                cityname = s2[s2.length-1];
 
                                 citiesList.add(new City(cityname, UTCCode / 3600, CountryCode.toLowerCase(), dao));
                         }

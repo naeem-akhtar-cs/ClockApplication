@@ -20,7 +20,6 @@
             android:onClick="ShowList"
             app:backgroundTint="#FFFF"
             android:background="#EE913D3D"
-            android:visibility="invisible"
             app:icon="@drawable/abc_vector_test" />
 
         <EditText
@@ -37,7 +36,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFF"
+        android:background="#93B695"
         />
-
 </LinearLayout>

@@ -10,7 +10,7 @@
 <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/AddCity"
+    android:text="+"
     android:onClick="GoToList"
     android:textSize="20dp"
     android:layout_alignParentBottom="true"
